@@ -5,30 +5,28 @@ require("dotenv").config();
 const app = express();
 const staticRoutes = require("./routes/static");
 
-// Middleware para analizar formularios (opcional, útil si usas POST más adelante)
+// Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// Configuración de EJS
+// View engine
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
-// Archivos estáticos
+// Public folder
 app.use(express.static(path.join(__dirname, "public")));
 
-// Rutas principales
+// Routes
 app.use("/", staticRoutes);
 
-// Manejo de rutas no encontradas (404) - opcional
+// Catch-all 404 (opcional)
 app.use((req, res) => {
-  res.status(404).render("404"); // Crea views/404.ejs si activas esto
+  res.status(404).render("404"); // solo si tienes views/404.ejs
 });
 
-// Puerto y host
-const port = process.env.PORT || 3000;
-const host = process.env.HOST || "localhost";
+// ✅ Render-friendly port setup
+const port = process.env.PORT;
 
-// Iniciar servidor
 app.listen(port, () => {
-  console.log(`Servidor corriendo en http://${host}:${port}`);
+  console.log(`Servidor corriendo en el puerto ${port}`);
 });
